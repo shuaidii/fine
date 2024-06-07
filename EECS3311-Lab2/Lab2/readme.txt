@@ -1,0 +1,12 @@
+代理模式：
+NavProxy.java实现的是代理模式。Autopilot.java并没有直接调用Navigation相关的数据、控制飞机部件等，而是通过NavProxy的代理，间接控制飞机。
+
+观察者模式：
+controlSurfacesModule包。GPSDataSubject.java为观察者，IControlActuator的几个实现类通过GPSDataSubject.register方法订阅观察者。
+GPSDataSubject通过update方法接受外部的通知数据，并把数据通知个IControlActuator的几个实现类。
+
+外观模式：
+NavigationFacade.java。NavigationFacade提供了一个navigate统一的方法，访问并控制一系列的子功能。
+
+策略模式：
+coordinateComparisonModule包。FirstIsBest与TwoThreeVoting都是实现ICompareCoordsStrategy的类，对同一行为，根据不同情况实现了不同的算法。

@@ -1,0 +1,338 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+class EntityViewImpl {
+- Renderable entity
+- Vector2D position
+- boolean delete
+- ImageView node
+- {static} double getViewOrder(Renderable.Layer)
++ void update(double,double)
++ boolean matchesEntity(Renderable)
++ void markForDelete()
++ Node getNode()
++ boolean isMarkedForDelete()
++ Renderable getEntity()
+}
+class Player {
+- Vector2D position
+- Animator anim
+- double health
+- double width
+- double height
+- Image image
++ void takeDamage(double)
++ double getHealth()
++ void setHealth(double)
++ boolean isAlive()
++ void up()
++ void down()
++ void left()
++ void right()
++ Projectile shoot()
++ Image getImage()
++ double getWidth()
++ double getHeight()
++ Vector2D getPosition()
++ Layer getLayer()
+}
+class Projectile {
+- {static} double WIDTH
+- {static} double HEIGHT
+- Vector2D position
+- boolean alive
+- MoveStrategy moveStrategy
+- boolean isPlayer
++ void takeDamage(double)
++ double getHealth()
++ boolean isAlive()
++ void setAlive(boolean)
++ void up()
++ void down()
++ void left()
++ void right()
++ Image getImage()
++ double getWidth()
++ double getHeight()
++ Vector2D getPosition()
++ Layer getLayer()
++ boolean isPlayer()
+}
+enum Type {
++  SLOW
++  FAST
+-  image: Image
+}
+interface MoveStrategy {
+~ double SPEED
+~ double move()
+~ getImage():Image
+}
+class FastMove {
++ double move()
++ Image getImage()
+}
+class SlowMove {
++ double move()
++ Image getImage()
+}
+class Vector2D {
+- double x
+- double y
++ double getX()
++ double getY()
++ void setX(double)
++ void setY(double)
+}
+interface GameObject {
++ void start()
++ void update()
+}
+class Enemy {
++ {static} double speedRate
+- {static} double SPEED
+- {static} double DOWN_STEP
+- {static} Random RANDOM
+- Vector2D position
+- double health
+- double width
+- double height
+- Image image
+- Type projetileType
+- boolean moveLeft
+- boolean moveRight
++ void takeDamage(double)
++ double getHealth()
++ boolean isAlive()
++ void up()
++ void down()
++ void left()
++ void right()
++ Projectile shoot()
++ Image getImage()
++ double getWidth()
++ double getHeight()
++ Vector2D getPosition()
++ Layer getLayer()
+}
+class EnemyBuilder {
+- vector2D: Vector2D
+~ Type projetileType
++ EnemyBuilder vector2D(Vector2D)
++ EnemyBuilder projetileType(Type)
++ {static} EnemyBuilder builder()
++ Enemy build()
+}
+class Bunker {
+- Vector2D position
+- double width
+- double height
+- Layer layer
+- Animator animator
+- boolean alive
+- void initAnimator()
++ void takeDamage(double)
++ double getHealth()
++ boolean isAlive()
++ Image getImage()
++ double getWidth()
++ double getHeight()
++ Vector2D getPosition()
++ Layer getLayer()
+}
+class BunkerAnimation {
+- String name
+- Image image
+- Animation next
++ String getName()
++ Image getCurrentFrame()
++ Animation next()
+}
+class  BunkerBuilder {
+- Vector2D position
+- double width
+- double height
++ {static} BunkerBuilder builder()
++ Bunker build()
++ BunkerBuilder position(Vector2D)
++ BunkerBuilder width(double)
++ BunkerBuilder height(double)
+}
+class Animator {
+- List<Animation> animations
+- Animation state
++ void setState(String)
++ Animation getState()
+}
+class GameEngine {
+- {static} Random RANDOM
+- List<GameObject> gameobjects
+- List<Renderable> renderables
+- Player player
+- boolean left
+- boolean right
+- int sizeX
+- int sizeY
+- boolean end
+- void initDataWithConfigFile(String)
++ boolean isEnd()
++ void update()
+- void checkCollide()
+- void checkGame()
++ List<Renderable> getRenderables()
++ void removeRenderable(Renderable)
++ void leftReleased()
++ void rightReleased()
++ void leftPressed()
++ void rightPressed()
++ void enemyShoot()
++ boolean shootPressed()
+- void movePlayer()
+- void initEnemies(JSONArray)
+- void initBunkers(JSONArray)
+- void initPlayer(JSONObject)
+- void initGameSize(JSONObject)
+- JSONObject getJSON(JSONObject,String)
+- JSONArray getArray(JSONObject,String)
+- String getString(JSONObject,String)
+- int getInt(JSONObject,String)
+}
+class SpaceBackground {
+- Rectangle space
+- Pane pane
+- GameEngine model
++ Image getImage()
++ double getWidth()
++ double getHeight()
++ Vector2D getPosition()
++ Layer getLayer()
+}
+class App {
++ {static} void main(String[])
++ void start(Stage)
+}
+class BoxCollider {
+- double width
+- double height
+- Vector2D position
++ double getWidth()
++ double getHeight()
++ Vector2D getPosition()
+}
+class KeyboardInputHandler {
+- GameEngine model
+- boolean left
+- boolean right
+- Set<KeyCode> pressedKeys
+- Map<String,MediaPlayer> sounds
+~ void handlePressed(KeyEvent)
+~ void handleReleased(KeyEvent)
+}
+interface Renderable {
++ Image getImage()
++ double getWidth()
++ double getHeight()
++ Vector2D getPosition()
++ Renderable.Layer getLayer()
+~ boolean collide(Renderable)
+}
+enum Layer {
++  BACKGROUND
++  FOREGROUND
++  EFFECT
+}
+interface Collider {
++ double getWidth()
++ double getHeight()
++ Vector2D getPosition()
++ boolean isColliding(Collider)
+}
+class GameWindow {
++ {static} int width
++ {static} int height
+- Scene scene
+- Pane pane
+- GameEngine gameEngine
+- List<EntityView> entityViews
+- Renderable background
+- double xViewportOffset
+- double yViewportOffset
+- {static} double VIEWPORT_MARGIN
++ void run()
+- void draw()
++ Scene getScene()
+}
+interface Animation {
++ String getName()
++ Image getCurrentFrame()
++ Animation next()
+}
+interface Damagable {
++ void takeDamage(double)
++ double getHealth()
++ boolean isAlive()
+}
+interface Moveable {
++ void up()
++ void down()
++ void left()
++ void right()
+}
+interface EntityView {
+~ void update(double,double)
+~ boolean matchesEntity(Renderable)
+~ void markForDelete()
+~ Node getNode()
+~ boolean isMarkedForDelete()
+~ Renderable getEntity()
+}
+
+
+EntityView <|.. EntityViewImpl
+Moveable <|.. Player
+Damagable <|.. Player
+Renderable <|.. Player
+Moveable <|.. Projectile
+Damagable <|.. Projectile
+Renderable <|.. Projectile
+Projectile +.. MoveStrategy
+Projectile +.. FastMove
+MoveStrategy <|.. FastMove
+Projectile +.. SlowMove
+MoveStrategy <|.. SlowMove
+Moveable <|.. Enemy
+Damagable <|.. Enemy
+Renderable <|.. Enemy
+Enemy +.. EnemyBuilder
+Damagable <|.. Bunker
+Renderable <|.. Bunker
+Bunker +.. BunkerAnimation
+Animation <|.. BunkerAnimation
+Bunker +.. BunkerBuilder
+Renderable <|.. SpaceBackground
+Collider <|.. BoxCollider
+
+GameEngine ..> EnemyBuilder
+GameEngine ..> BunkerBuilder
+GameEngine --> GameObject
+GameEngine --> Renderable
+
+GameWindow --> GameEngine
+GameWindow --> EntityView
+GameWindow ..> KeyboardInputHandler
+
+ Bunker --> Animator
+ Animator --> Animation
+
+Renderable --|> Collider
+
+
+ 
+App --> GameEngine
+App --> GameWindow
+
+Type ..+ Projectile
+
+Vector2D ..> Renderable
+Layer ..+ Renderable
+@enduml

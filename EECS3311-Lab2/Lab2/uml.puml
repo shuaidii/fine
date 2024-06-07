@@ -1,0 +1,119 @@
+@startuml
+
+abstract class GPSReceiver {
+- {static} Random RANDOM
++ Coordinates read()
+# {abstract}void showReceiver()
+}
+
+class TwoThreeVoting {
+- {static} Random RANDOM
++ Coordinates compareCoords(Coordinates,Coordinates,Coordinates)
+}
+
+class RockwellReceiver {
+# void showReceiver()
+}
+
+class HoneywellReceiver {
+# void showReceiver()
+}
+
+class ElevatorActuator {
++ void update(int,int,int,int)
+}
+
+class NavigationServer {
++ {static} void main(String[])
+}
+
+class NavigationFacade {
+- List<GPSReceiver> gpsReaders
+- ICompareCoordsStrategy firstIsBest
+- ICompareCoordsStrategy twoThreeVoting
+- GPSDataSubject gpsDataSubject
++ Coordinates navigate(int,int)
++ Coordinates compareGPSData(List<Coordinates>)
+- ICompareCoordsStrategy getCompareCoordsStrategy(Coordinates,Coordinates,Coordinates)
+}
+
+class Autopilot {
+- NavProxy proxy
+- int nextLat
+- int nextLon
++ Coordinates navigate()
+}
+
+class NavProxy {
+- NavigationFacade navigationFacade
+- void init()
++ Coordinates navigate(int,int)
+}
+
+class AileronActuator {
++ void update(int,int,int,int)
+}
+
+interface IControlActuator {
++ void update(int,int,int,int)
+}
+
+class GPSDataSubject {
+- List<IControlActuator> actuatorList
++ void register(List<IControlActuator>)
++ void update(int,int,int,int)
+}
+
+class FirstIsBest {
++ Coordinates compareCoords(Coordinates,Coordinates,Coordinates)
+}
+
+class RudderActuator {
++ void update(int,int,int,int)
+}
+
+class Coordinates {
+- int latitude
+- int longitude
++ boolean equals(Object)
++ int hashCode()
++ int getLatitude()
++ void setLatitude(int)
++ int getLongitude()
++ void setLongitude(int)
+}
+
+interface ICompareCoordsStrategy {
++ Coordinates compareCoords(Coordinates,Coordinates,Coordinates)
+}
+
+
+ICompareCoordsStrategy <|.. TwoThreeVoting
+GPSReceiver <|-- RockwellReceiver
+GPSReceiver <|-- HoneywellReceiver
+IControlActuator <|.. ElevatorActuator
+IControlActuator <|.. AileronActuator
+ICompareCoordsStrategy <|.. FirstIsBest
+IControlActuator <|.. RudderActuator
+
+GPSDataSubject -> IControlActuator
+
+NavigationFacade -> GPSReceiver
+NavigationFacade -> ICompareCoordsStrategy
+NavigationFacade -> GPSDataSubject
+
+NavigationFacade ..> Coordinates
+GPSReceiver ..> Coordinates
+ICompareCoordsStrategy ..> Coordinates
+
+NavProxy -> NavigationFacade
+'NavProxy ..> IControlActuator
+'NavProxy ..> GPSReceiver
+
+Autopilot -> NavProxy
+
+NavigationServer ..> NavProxy
+NavigationServer ..> Autopilot
+
+
+@enduml

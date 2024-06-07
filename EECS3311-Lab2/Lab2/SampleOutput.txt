@@ -1,0 +1,28 @@
+================================================
+Honeywell GPS Reader is Used
+GPS DATA LAT DATA IS 1 GPS DATA LON IS  0
+Honeywell GPS Reader is Used
+GPS DATA LAT DATA IS 0 GPS DATA LON IS  0
+Rockwell GPS Reader is Used
+GPS DATA LAT DATA IS 1 GPS DATA LON IS  1
+ ********* INVOKING VOTING COMPARISON **********
+ ********* NO AGREEMENT **********
+ ********* GPS1 DATA WILL BE USED **********
+Aileron Actuator Notified with values  1 0 5 2
+Elevator Actuator Notified with values  1 0 5 2
+Rudder Actuator Notified with values  1 0 5 2
+
+================================================
+Honeywell GPS Reader is Used
+GPS DATA LAT DATA IS 1 GPS DATA LON IS  1
+Honeywell GPS Reader is Used
+GPS DATA LAT DATA IS 1 GPS DATA LON IS  1
+Rockwell GPS Reader is Used
+GPS DATA LAT DATA IS 0 GPS DATA LON IS  1
+ ********* INVOKING VOTING COMPARISON **********
+------- AGREEMENT WITH GPS1 AND GPS2
+Aileron Actuator Notified with values  1 1 5 2
+Elevator Actuator Notified with values  1 1 5 2
+Rudder Actuator Notified with values  1 1 5 2
+
+================================================

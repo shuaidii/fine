@@ -1,0 +1,12 @@
+<project name="EchoServer" default="compile">
+    <property name="src" location="src"/>
+    <property name="bin" location="."/>
+
+    <target name="init">
+        <mkdir dir="${bin}"/>
+    </target>
+
+    <target name="compile" depends="init">
+        <javac srcdir="${src}" destdir="${bin}"/>
+    </target>
+</project>
